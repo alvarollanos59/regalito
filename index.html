@@ -24,6 +24,14 @@
 
         .fuente-cursiva { font-family: 'Dancing Script', cursive; }
 
+        /* CANVAS DE PARTÍCULAS */
+        #canvas-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
         /* ANIMACIONES DE ENTRADA SEGURAS */
         .entrada-suave {
             animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -48,7 +56,7 @@
             max-width: 340px;
             aspect-ratio: 4/3;
             z-index: 5;
-            background: #2a2a2a; /* Plástico de la tele */
+            background: #2a2a2a;
             border-radius: 30px;
             box-shadow: 
                 inset 0 10px 20px rgba(255,255,255,0.1),
@@ -75,13 +83,13 @@
         .tv-content {
             width: 100%;
             height: 100%;
-            padding: 4%; /* Margen para reducirlo un poquitín */
-            object-fit: contain; /* Asegura que el GIF entre por completo sin recortarse */
+            padding: 4%; /* Reduce el GIF un poquitín para que entre bien */
+            object-fit: contain; /* Asegura que el GIF entre completo sin recortar */
             filter: contrast(1.2) brightness(1.1) saturate(0.8);
             transition: opacity 0.1s;
         }
 
-        /* Cristal curvo y líneas de barrido (Scanlines) */
+        /* Cristal curvo y líneas de barrido */
         .tv-glass {
             position: absolute;
             inset: 0;
@@ -103,11 +111,11 @@
             z-index: 3;
         }
 
-        /* Capa de Estática (Lluvia de la TV) */
+        /* Capa de Estática */
         .tv-static-noise {
             position: absolute;
             inset: 0;
-            background-image: url('https://media.giphy.com/media/Y41rwajNkeJm8/giphy.gif'); /* GIF de estática mejorado */
+            background-image: url('https://media.giphy.com/media/Y41rwajNkeJm8/giphy.gif');
             background-size: cover;
             opacity: 0;
             z-index: 4;
@@ -115,7 +123,6 @@
             mix-blend-mode: screen;
         }
 
-        /* Flash blanco de tubo CRT */
         .tv-flash {
             position: absolute;
             inset: 0;
@@ -157,7 +164,7 @@
             background: repeating-linear-gradient(to bottom, #111, #111 2px, transparent 2px, transparent 4px);
         }
 
-        /* 💥 INTERFERENCIA EXTREMA AL CAMBIAR CANAL 💥 */
+        /* 💥 INTERFERENCIA EXTREMA 💥 */
         @keyframes glitch-anim {
             0% { transform: translate(0) skew(0deg); filter: drop-shadow(0 0 0 rgba(255,0,0,0.8)) drop-shadow(0 0 0 rgba(0,0,255,0.8)); opacity: 1; }
             20% { transform: translate(-10px, 5px) skew(-15deg); filter: drop-shadow(-10px 0 0 rgba(255,0,0,0.8)) drop-shadow(10px 0 0 rgba(0,255,255,0.8)); opacity: 0.6; }
@@ -174,18 +181,11 @@
             100% { opacity: 0; }
         }
 
-        /* Clases que se activan por JS */
-        .channel-changing .tv-content {
-            animation: glitch-anim 0.25s infinite; /* Efecto RGB Split y temblor */
-        }
-        .channel-changing .tv-static-noise {
-            opacity: 0.8; /* Muestra lluvia gris */
-        }
-        .channel-changing .tv-flash {
-            animation: crt-flash 0.4s forwards; /* Flash blanco rápido */
-        }
+        .channel-changing .tv-content { animation: glitch-anim 0.25s infinite; }
+        .channel-changing .tv-static-noise { opacity: 0.8; }
+        .channel-changing .tv-flash { animation: crt-flash 0.4s forwards; }
 
-        /* INTERFAZ DE TEXTOS Y BOTONES */
+        /* INTERFAZ DE TEXTOS */
         .ui-container {
             position: absolute;
             bottom: 0; left: 0; width: 100%; height: 50vh;
@@ -195,13 +195,8 @@
             background: linear-gradient(to top, #050505 80%, transparent 100%);
         }
 
-        .scene-transition {
-            transition: all 0.5s ease-out;
-        }
-        .scene-hidden {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        .scene-transition { transition: all 0.5s ease-out; }
+        .scene-hidden { opacity: 0; transform: translateY(10px); }
 
         .cursor-blink::after {
             content: '|';
@@ -211,9 +206,7 @@
         @keyframes blink { 50% { opacity: 0; } }
 
         /* PREÁMBULO */
-        #pantalla-inicio {
-            background: radial-gradient(circle at center, #1f1a24 0%, #050505 100%);
-        }
+        #pantalla-inicio { background: radial-gradient(circle at center, #1f1a24 0%, #050505 100%); }
         .vinilo {
             box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 10px rgba(255,255,255,0.1);
             background: repeating-radial-gradient(#111 0, #111 2px, #1a1a1a 3px, #1a1a1a 4px);
@@ -229,14 +222,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
         .text-glow { text-shadow: 0 0 10px rgba(236, 72, 153, 0.8), 0 0 20px rgba(236, 72, 153, 0.4); }
-        
-        /* CANVAS DE PARTÍCULAS */
-        #canvas-particles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
@@ -252,12 +237,10 @@
         </svg>
     </button>
 
-    <!-- PANTALLA DE INICIO (PREÁMBULO) -->
+    <!-- PANTALLA DE INICIO -->
     <div id="pantalla-inicio" class="absolute inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-1000">
-        
         <h1 class="fuente-cursiva text-6xl mb-12 text-pink-400 text-glow entrada-suave retraso-1">Para Yessi</h1>
         
-        <!-- Tocadiscos -->
         <div class="relative w-64 h-64 mb-16 entrada-suave retraso-2">
             <div class="absolute inset-0 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-2xl flex items-center justify-center"></div>
             <div id="disco" class="absolute inset-4 vinilo rounded-full border-[4px] border-[#0a0a0a] flex items-center justify-center transition-transform">
@@ -277,26 +260,21 @@
         </button>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL (LA DEDICATORIA) -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <div id="escena-principal" class="absolute inset-0 w-full h-full flex flex-col hidden">
         
-        <!-- Partículas de fondo (Canvas) -->
+        <!-- Partículas mágicas de fondo -->
         <canvas id="canvas-particles"></canvas>
 
         <!-- TELEVISOR RETRO -->
         <div class="tv-wrapper" id="televisor">
             <div class="tv-screen-container">
-                <!-- Se cargarán tus GIFs locales, si fallan usará los de respaldo de internet -->
                 <img id="personaje-img" src="hulk.gif" class="tv-content" alt="Héroe" onerror="this.src='https://media.tenor.com/2s3KkZ_9iZcAAAAi/dance-dancing.gif'">
-                
-                <!-- Efectos Interferencia -->
                 <div class="tv-glass"></div>
                 <div class="tv-reflection"></div>
                 <div class="tv-static-noise"></div>
-                <div class="tv-flash"></div> <!-- Flash blanco de encendido/cambio -->
+                <div class="tv-flash"></div>
             </div>
-            
-            <!-- Botonera de la tele -->
             <div class="tv-controls">
                 <div class="tv-dial" id="dial-1"></div>
                 <div class="tv-dial" id="dial-2"></div>
@@ -304,16 +282,14 @@
             </div>
         </div>
 
-        <!-- Contenedor de Textos -->
+        <!-- Textos -->
         <div class="ui-container scene-transition" id="contenedor-ui">
             <h3 id="titulo-amor" class="fuente-cursiva text-4xl text-pink-400 mb-2 drop-shadow-lg text-glow">
                 Mi Héroe ❤️
             </h3>
-            
             <div class="min-h-[90px] mb-6">
                 <p id="mensaje" class="text-white/90 text-xl font-light leading-relaxed cursor-blink"></p>
             </div>
-
             <button id="btn-siguiente" class="w-full btn-cinematic text-white/90 font-medium py-4 px-6 rounded-2xl flex justify-between items-center group active:scale-[0.98] transition-all">
                 <span class="text-sm tracking-widest uppercase opacity-80" id="btn-texto">Siguiente</span>
                 <span class="bg-pink-500/20 p-2 rounded-full group-hover:bg-pink-500/40 transition-colors">
@@ -327,97 +303,47 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
-        /* 1. HISTORIA Y RUTAS */
         const historia = [
-            {
-                titulo: "Mi Héroe ❤️",
-                mensaje: "Yo quisiera ser el Hulk y te protejo...",
-                imagen: "hulk.gif",
-                respaldo: "https://media.tenor.com/2s3KkZ_9iZcAAAAi/dance-dancing.gif"
-            },
-            {
-                titulo: "Por el universo ✨",
-                mensaje: "Superman para exhibirte el universo...",
-                imagen: "superman.gif",
-                respaldo: "https://media.tenor.com/PZt7I039E8IAAAAi/superman-henry-cavill.gif"
-            },
-            {
-                titulo: "Sin temor 🦇",
-                mensaje: "Si fuese Batman no habría noches de temor...",
-                imagen: "batman.gif",
-                respaldo: "https://media.tenor.com/fVzR70tXF-QAAAAi/batman-dance.gif"
-            },
-            {
-                titulo: "Por un beso 🕷️",
-                mensaje: "Si yo fuera el Hombre Araña, por un beso, cien pies de altura escalo en tu balcón...",
-                imagen: "spiderman.gif",
-                respaldo: "https://media.tenor.com/z0XqHwOItqYAAAAi/spider-man-dance.gif"
-            },
-            {
-                titulo: "Tu Héroe Favorito 💖",
-                mensaje: "Si alguien te pregunta súper héroe favorito... pues dile que soy yo.",
-                imagen: "final.jpg",
-                respaldo: "https://media.tenor.com/r_1wY27sIe0AAAAi/heart-love.gif"
-            }
+            { titulo: "Mi Héroe ❤️", mensaje: "Yo quisiera ser el Hulk y te protejo...", imagen: "hulk.gif", respaldo: "https://media.tenor.com/2s3KkZ_9iZcAAAAi/dance-dancing.gif" },
+            { titulo: "Por el universo ✨", mensaje: "Superman para exhibirte el universo...", imagen: "superman.gif", respaldo: "https://media.tenor.com/PZt7I039E8IAAAAi/superman-henry-cavill.gif" },
+            { titulo: "Sin temor 🦇", mensaje: "Si fuese Batman no habría noches de temor...", imagen: "batman.gif", respaldo: "https://media.tenor.com/fVzR70tXF-QAAAAi/batman-dance.gif" },
+            { titulo: "Por un beso 🕷️", mensaje: "Si yo fuera el Hombre Araña, por un beso, cien pies de altura escalo en tu balcón...", imagen: "spiderman.gif", respaldo: "https://media.tenor.com/z0XqHwOItqYAAAAi/spider-man-dance.gif" },
+            { titulo: "Tu Héroe Favorito 💖", mensaje: "Si alguien te pregunta súper héroe favorito... pues dile que soy yo.", imagen: "final.gif", respaldo: "https://media.tenor.com/r_1wY27sIe0AAAAi/heart-love.gif" }
         ];
 
-        /* 2. AUDIO WEB API (Sintetizador de interferencia de TV mejorado) */
         let audioCtx = null;
-        
         function reproducirEstatiicaTV() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!audioCtx && AudioContext) audioCtx = new AudioContext();
                 if (!audioCtx || audioCtx.state === 'suspended') return;
-
-                // Crear ruido blanco crudo
                 const bufferSize = audioCtx.sampleRate * 0.4; 
                 const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                 const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1; // Ruido puro
-                }
-                
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                
-                // Filtro para hacerlo sonar eléctrico (Highpass)
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'highpass';
-                filter.frequency.value = 1000;
-                
-                // Golpe de volumen seco (como un switch eléctrico)
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1; 
+                const noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'highpass'; filter.frequency.value = 1000;
                 const gainNode = audioCtx.createGain();
                 gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
                 gainNode.gain.linearRampToValueAtTime(0.6, audioCtx.currentTime + 0.05);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
-
-                noise.connect(filter);
-                filter.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
+                noise.connect(filter); filter.connect(gainNode); gainNode.connect(audioCtx.destination);
                 noise.start();
             } catch(e) {}
         }
 
-        /* 3. LÓGICA DE LA DEDICATORIA */
         let pasoActual = 0;
         let isTyping = false;
         let typeTimeout;
-
         const uiElements = {
-            titulo: document.getElementById('titulo-amor'),
-            mensaje: document.getElementById('mensaje'),
-            imagen: document.getElementById('personaje-img'),
-            televisor: document.getElementById('televisor'),
-            contenedorUi: document.getElementById('contenedor-ui'),
-            btnTexto: document.getElementById('btn-texto'),
+            titulo: document.getElementById('titulo-amor'), mensaje: document.getElementById('mensaje'),
+            imagen: document.getElementById('personaje-img'), televisor: document.getElementById('televisor'),
+            contenedorUi: document.getElementById('contenedor-ui'), btnTexto: document.getElementById('btn-texto'),
             dial: document.getElementById('dial-1')
         };
 
         async function typeWriter(text, element) {
-            isTyping = true;
-            element.innerHTML = '';
+            isTyping = true; element.innerHTML = '';
             for(let i = 0; i < text.length; i++) {
                 if(!isTyping) { element.innerHTML = text; break; }
                 element.innerHTML += text.charAt(i);
@@ -426,35 +352,19 @@
             isTyping = false;
         }
 
-        // EVENTO: BOTÓN SIGUIENTE (CAMBIAR CANAL)
         document.getElementById('btn-siguiente').addEventListener('click', () => {
-            if (isTyping) {
-                isTyping = false;
-                clearTimeout(typeTimeout);
-                return;
-            }
-
-            pasoActual++;
-            if (pasoActual >= historia.length) pasoActual = 0;
-
-            // --- INICIA INTERFERENCIA ---
-            reproducirEstatiicaTV(); // Audio de estática eléctrica
-            
-            // Girar perilla
+            if (isTyping) { isTyping = false; clearTimeout(typeTimeout); return; }
+            pasoActual++; if (pasoActual >= historia.length) pasoActual = 0;
+            reproducirEstatiicaTV(); 
             uiElements.dial.style.transform = `rotate(${pasoActual * 45}deg)`;
-
-            // Añadir clase que dispara Glitch, Estática y Flash Blanco (CSS)
             uiElements.televisor.classList.add('channel-changing');
             uiElements.contenedorUi.classList.add('scene-hidden');
-
-            // En medio de la interferencia, cambiamos la imagen
             setTimeout(() => {
                 const data = historia[pasoActual];
                 uiElements.titulo.innerHTML = data.titulo;
                 uiElements.imagen.src = data.imagen;
                 uiElements.imagen.onerror = function() { this.src = data.respaldo; };
                 uiElements.mensaje.innerHTML = '';
-
                 if (pasoActual === historia.length - 1) {
                     uiElements.btnTexto.innerText = "Revivir momento";
                     uiElements.titulo.classList.add('text-pink-300', 'scale-110');
@@ -462,55 +372,35 @@
                     uiElements.btnTexto.innerText = "Siguiente";
                     uiElements.titulo.classList.remove('text-pink-300', 'scale-110');
                 }
-            }, 200); // 200ms es el pico del ruido
-
-            // Termina la interferencia y mostramos el nuevo superhéroe
+            }, 200); 
             setTimeout(() => {
                 uiElements.televisor.classList.remove('channel-changing');
                 uiElements.contenedorUi.classList.remove('scene-hidden');
-
-                // Volver a escribir
                 setTimeout(() => typeWriter(historia[pasoActual].mensaje, uiElements.mensaje), 200);
-
-            }, 450); // El efecto de interferencia dura casi medio segundo
+            }, 450); 
         });
 
-        /* 4. PREÁMBULO */
         const pantallaInicio = document.getElementById('pantalla-inicio');
         const btnComenzar = document.getElementById('btn-comenzar');
         const musicaFondo = document.getElementById('musica-fondo');
         let reproduciendo = false;
 
         btnComenzar.addEventListener('click', () => {
-            if (window.AudioContext || window.webkitAudioContext) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
+            if (window.AudioContext || window.webkitAudioContext) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             document.getElementById('brazo-tocadiscos').classList.add('brazo-activo');
             btnComenzar.style.opacity = '0';
-            
-            // --- 1. ANIMACIÓN VISUAL ---
             setTimeout(() => {
                 document.getElementById('disco').classList.add('girando');
-                
                 setTimeout(() => {
                     pantallaInicio.style.opacity = '0';
                     document.getElementById('escena-principal').classList.remove('hidden');
-                    
-                    // Al encender la tele la primera vez, hacer un flash
                     uiElements.televisor.classList.add('channel-changing');
                     setTimeout(()=> uiElements.televisor.classList.remove('channel-changing'), 400);
-
                     setTimeout(() => {
                         pantallaInicio.style.display = 'none';
-                        
-                        // --- 2. REPRODUCIR MÚSICA EXACTAMENTE AL INICIAR EL TEXTO ---
                         musicaFondo.play().then(() => { 
-                            reproduciendo = true; 
-                            document.getElementById('btn-musica').classList.remove('hidden');
+                            reproduciendo = true; document.getElementById('btn-musica').classList.remove('hidden');
                         }).catch(e => console.log("La música requiere archivo local"));
-
-                        // Inicia la escritura de la letra
                         typeWriter(historia[0].mensaje, uiElements.mensaje);
                     }, 1000);
                 }, 1500);
@@ -518,24 +408,8 @@
         });
 
         document.getElementById('btn-musica').addEventListener('click', () => {
-            if (reproduciendo) {
-                musicaFondo.pause();
-                document.getElementById('btn-musica').style.opacity = '0.5';
-            } else {
-                musicaFondo.play();
-                document.getElementById('btn-musica').style.opacity = '1';
-            }
-            reproduciendo = !reproduciendo;
-        });
-
-       document.getElementById('btn-musica').addEventListener('click', () => {
-            if (reproduciendo) {
-                musicaFondo.pause();
-                document.getElementById('btn-musica').style.opacity = '0.5';
-            } else {
-                musicaFondo.play();
-                document.getElementById('btn-musica').style.opacity = '1';
-            }
+            if (reproduciendo) { musicaFondo.pause(); document.getElementById('btn-musica').style.opacity = '0.5'; } 
+            else { musicaFondo.play(); document.getElementById('btn-musica').style.opacity = '1'; }
             reproduciendo = !reproduciendo;
         });
 
@@ -545,11 +419,7 @@
         const canvas = document.getElementById('canvas-particles');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
@@ -557,48 +427,28 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1; // Más grandes y visibles
-                this.speedY = Math.random() * -1 - 0.3; // Suben un poquito más rápido
+                this.size = Math.random() * 3 + 1; 
+                this.speedY = Math.random() * -1 - 0.3; 
                 this.speedX = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.6 + 0.3; // Mucho más brillantes
-                // Colores mágicos: Blanco, rosita, magenta
+                this.opacity = Math.random() * 0.6 + 0.3; 
                 const colors = ['#ffffff', '#fbcfe8', '#ec4899'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
             update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                if (this.y < 0 - this.size) {
-                    this.y = canvas.height + 10;
-                    this.x = Math.random() * canvas.width;
-                }
+                this.y += this.speedY; this.x += this.speedX;
+                if (this.y < 0 - this.size) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; }
             }
             draw() {
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = this.color;
-                
-                // Efecto de resplandor (Glow)
-                ctx.shadowBlur = 12;
-                ctx.shadowColor = this.color;
-                
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Limpiar sombra para no saturar la memoria
+                ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
+                ctx.shadowBlur = 12; ctx.shadowColor = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
                 ctx.shadowBlur = 0;
             }
         }
-
-        // Aumentamos a 100 partículas para que llene bien la pantalla
         for (let i = 0; i < 100; i++) particlesArray.push(new Particle());
-
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
+            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
