@@ -353,7 +353,7 @@
         }
 
         document.getElementById('btn-siguiente').addEventListener('click', () => {
-            if (isTyping) { isTyping = false; clearTimeout(typeTimeout); return; }
+            if (isTyping) { isTyping = false; return; }
             pasoActual++; if (pasoActual >= historia.length) pasoActual = 0;
             reproducirEstatiicaTV(); 
             uiElements.dial.style.transform = `rotate(${pasoActual * 45}deg)`;
